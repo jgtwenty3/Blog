@@ -1,6 +1,5 @@
 # Blogg
 
-Blog
 This is the beginning of a minimalistic blog/social media application built using no Javascript, only Python and HMTL. It allows users to create, read, and delete blog posts as well as add, and delete comments to those posts. I want to style it differently, but it's functioning well at the moment. 
 
 Features
