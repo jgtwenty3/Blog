@@ -7,7 +7,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 auth = Blueprint("auth", __name__)
 
 
-
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -25,15 +24,12 @@ def login():
         else:
             flash('Email does not exist.', category='error')
 
-    return render_template("login.html", user = current_user)
+    return render_template("login.html", user=current_user)
 
-    
 
-    return render_template("login.html")
-
-@auth.route("/sign-up", methods=["GET", "POST"])
+@auth.route("/sign-up", methods=['GET', 'POST'])
 def sign_up():
-    if request.method == "POST":
+    if request.method == 'POST':
         email = request.form.get("email")
         username = request.form.get("username")
         password1 = request.form.get("password1")
@@ -43,35 +39,31 @@ def sign_up():
         username_exists = User.query.filter_by(username=username).first()
 
         if email_exists:
-            flash("Someone's using that email", category="error")
+            flash('Email is already in use.', category='error')
         elif username_exists:
-            flash("Name's taken", category="error")
+            flash('Username is already in use.', category='error')
         elif password1 != password2:
-            flash("Passwords don't match", category="error")
+            flash('Password don\'t match!', category='error')
         elif len(username) < 2:
-            flash("Gotta use more letters", category="error")
+            flash('Username is too short.', category='error')
         elif len(password1) < 6:
-            flash("Password is too short", category="error")
+            flash('Password is too short.', category='error')
         elif len(email) < 4:
-            flash("Email invalid", category="error")
+            flash("Email is invalid.", category='error')
         else:
-            new_user = User(
-                email=email,
-                username=username,
-                password=generate_password_hash(password1, method='pbkdf2:sha256'),
-            )
-
+            new_user = User(email=email, username=username, password=generate_password_hash(
+                password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
-            flash("User created!")
-            return redirect(url_for("views.home"))
+            flash('User created!')
+            return redirect(url_for('views.home'))
 
     return render_template("signup.html", user=current_user)
+
 
 @auth.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("views.home"))
-
