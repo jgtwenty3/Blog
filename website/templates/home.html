@@ -1,6 +1,26 @@
 {% extends "base.html" %}
-{% block title %} Home {% endblock %}
+{% block title %} Home {% endblock %}{% block content %}
+<h1 align = "center">Posts</h1>
+<div id = "posts">
+    {% for post in posts %}
+        <div class = "card border-dark">
+            <div class = "card-header d-flex justify-content-between align-items0center">
+                <a href = "/posts/{{post.user.username}}">{{post.user.username}}</a>
+                <div clas s= "btn-group">
+                    <button type = "button"  class ="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle = "dropdown">
+                        <ul class = "dropdown-menu">
+                            <li><a href = "" class = "dropdown-item"> Delete</a></li>
+                        </ul>
 
-{% block content %}
-<h1>Home</h1>
+                    </button>
+                </div>
+            </div>
+            <div class = "card-body">
+                <div class = "card-text">{{post.text}}</div>
+            </div>
+            <div class = "card-footer text-muted">{{post.date_created}}</div>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
